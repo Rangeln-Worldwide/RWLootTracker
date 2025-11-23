@@ -221,7 +221,7 @@ function RWLootTrackerGlobal.CreateGUI()
     f.title = f:CreateFontString(nil, "OVERLAY")
     f.title:SetFontObject("GameFontHighlight")
     f.title:SetPoint("LEFT", f.TitleBg, "LEFT", 15, 0)
-    f.title:SetText("RWLootTracker " .. RWLootTrackerGlobal.Version)
+    f.title:SetText("Rangeln Worldwide Loot Tracker " .. RWLootTrackerGlobal.GetVersion())
     f.title:SetTextColor(1, 1, 1, 1)
 
     -- Panels für die Tab-Inhalte
@@ -443,4 +443,4 @@ function RWLootTrackerGlobal.CreateGUI()
     RWLootTrackerGlobal.InitializeConfirmDialog()
 end
 
-DebugPrint("Viewer-Modul geladen (Version " .. RWLootTrackerGlobal.Version .. ").")
+DebugPrint("Viewer-Modul geladen.")

@@ -1,15 +1,19 @@
 -- RWLootTracker.lua
 RWLootTrackerGlobal = RWLootTrackerGlobal or {}
 
-
 LootTrackerConfig = LootTrackerConfig or {}
 
 -- Addon-Datenbank für Beute-Einträge
 LootTrackerDB = LootTrackerDB or {}
 
-
-RWLootTrackerGlobal.Version = "0.3.1"
-
+function RWLootTrackerGlobal.GetVersion()
+    local toc_version = C_AddOns.GetAddOnMetadata("RWLootTracker", "Version")
+    if toc_version then
+        return toc_version
+    else
+        return "B.o.b.r"
+    end
+end
 
 local defaults = {
     DebugMode = false,
@@ -411,16 +415,26 @@ RWLootTrackerGlobal.settingsPanel:SetScript("OnShow", function(self)
 end)
 
 
-SLASH_RWLOOTTRACKER1 = "/rwloottracker"
-SLASH_RWLOOTTRACKER2 = "/rwl"
-
-SlashCmdList["RWLOOTTRACKER"] = function(msg)
+function RWLootTrackerGlobal.OpenGUI()
     if RWLootTrackerGlobal.CreateGUI and type(RWLootTrackerGlobal.CreateGUI) == "function" then
         RWLootTrackerGlobal.CreateGUI()
     else
-        print("RWLootTracker: GUI-Modul nicht geladen oder CreateGUI-Funktion nicht verfügbar. Bitte Addon neuladen.")
+        print("RWLootTracker: GUI-Modul nicht geladen.")
     end
 end
 
 
-DebugPrint("Core-Modul RWLootTracker.lua geladen. Version " .. RWLootTrackerGlobal.Version .. ".")
+SLASH_RWLOOTTRACKER1 = "/rwloottracker"
+SLASH_RWLOOTTRACKER2 = "/rwl"
+
+SlashCmdList["RWLOOTTRACKER"] = function(msg)
+    RWLootTrackerGlobal.OpenGUI()
+end
+
+
+function RWL_CompartmentClickAction()
+    RWLootTrackerGlobal.OpenGUI()
+end
+
+
+DebugPrint("Core-Modul RWLootTracker.lua geladen. " .. RWLootTrackerGlobal.GetVersion())

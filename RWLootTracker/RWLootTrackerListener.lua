@@ -192,4 +192,4 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
     end
 end)
 
-DebugPrint("Listener-Modul geladen (Version " .. RWLootTrackerGlobal.Version .. ").")
+DebugPrint("Listener-Modul geladen. " .. RWLootTrackerGlobal.GetVersion())

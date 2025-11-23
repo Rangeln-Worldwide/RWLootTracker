@@ -1,10 +1,11 @@
-## Interface: 110205
+## Interface: 110205, 120000
 ## Title: RWLootTracker
 ## Notes: Tracking of raid loot
 ## Author: Die oberste Rangelleitung
 ## SavedVariables: LootTrackerConfig, LootTrackerDB
 ## Dependencies: Blizzard_Console
-## Version: 0.3.1
+## AddonCompartmentFunc: RWL_CompartmentClickAction
+## Version: 0.4.0
 ## IconTexture: Interface\AddOns\RWLootTracker\media\RangelnIcon.tga
 ## Category: Loot
 ## Category-deDE: Beute
