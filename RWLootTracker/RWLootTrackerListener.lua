@@ -1,5 +1,4 @@
--- Dies ist die Listener-Datei, die sich um die Beute-Events kütert.
-
+-- Dies ist die Listener-Datei, die sich um die Beute-Events kümmert.
 
 local function DebugPrint(msg)
     if LootTrackerConfig and LootTrackerConfig.DebugMode then
@@ -50,6 +49,8 @@ local function ShouldTrackInstance()
                 instanceDifficulty = "MYTHIC"
             elseif difficultyName == 17 then
                 instanceDifficulty = "LFR"
+            elseif difficultyName == 233 then
+                instanceDifficulty = "MYTHIC_FLEX"
             else
                 instanceDifficulty = "unknown"
             end
@@ -117,9 +118,9 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
                         elseif rollType == Enum.EncounterLootDropRollState.Pass then
                             rollTypeName = "Pass"
                         else
-                            rollTypeName = "Unbekannt" -- Fallback für unerwartete Rollzustände
+                            rollTypeName = "Unbekannt" 
                         end
-                        break -- Wir haben den Gewinner gefunden, Schleife beenden
+                        break 
                     end
                 end
             end
@@ -147,14 +148,11 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
             local fullTime = date("%Y-%m-%d %H:%M:%S")
             local dateOnly = date("%Y-%m-%d")
 
-            -- Zusätzliche Informationen aus dropInfo.winner und erweiterte Logik für Klasse/Spezialisierung
             local playerGUID = dropInfo.winner.playerGUID or "Unbekannt"
             local playerClass = "Unbekannt"
             local playerSpecialization = dropInfo.winner.specialization or "Unbekannt"
 
-            -- Versuche, die Klasse über GetPlayerInfoByGUID zu ermitteln und zu lokalisieren
             if playerGUID ~= "Unbekannt" then
-                -- Der erste Rückgabewert von GetPlayerInfoByGUID ist die lokalisierte Klasse.
                 local locClassString, _, _, _, _, _, _ = GetPlayerInfoByGUID(playerGUID)
                 if locClassString then
                     playerClass = locClassString
@@ -162,7 +160,6 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
             end
 
 
-            -- Sicherstellen, dass LootTrackerDB existiert, bevor darauf zugegriffen wird
             LootTrackerDB = LootTrackerDB or {}
             LootTrackerDB[dateOnly] = LootTrackerDB[dateOnly] or {}
 

@@ -1,4 +1,3 @@
--- RWLootTracker.lua
 RWLootTrackerGlobal = RWLootTrackerGlobal or {}
 
 LootTrackerConfig = LootTrackerConfig or {}
@@ -25,6 +24,7 @@ local defaults = {
         ["NHC"] = true,  -- 14
         ["HC"] = true,  -- 15
         ["MYTHIC"] = true,  -- 16
+        ["MYTHIC_FLEX"] = true, -- 233
         ["LFR"] = false,  -- 17
     },
 }
@@ -321,7 +321,7 @@ function RWLootTrackerGlobal.CreateSettingsPanelElements(parentFrame)
 
     local raidDifficultyConfig = CreateFrame("Frame", nil, parentFrame)
     raidDifficultyConfig:SetPoint("TOPLEFT", guildNameFrame, "BOTTOMLEFT", 0, -20)
-    raidDifficultyConfig:SetSize(420, 100)
+    raidDifficultyConfig:SetSize(420, 130)
     raidDifficultyConfig:SetFrameLevel(parentFrame:GetFrameLevel() + 1)
 
     local raidDifficultyLabel = raidDifficultyConfig:CreateFontString(nil, "OVERLAY")
@@ -336,6 +336,7 @@ function RWLootTrackerGlobal.CreateSettingsPanelElements(parentFrame)
         { key = "NHC", text = "Normal Raid" },
         { key = "HC", text = "HC Raid" },
         { key = "MYTHIC", text = "Mythic Raid" },
+        { key = "MYTHIC_FLEX", text = "Mythic Flex Raid" },
     }
 
     local col1X = 15

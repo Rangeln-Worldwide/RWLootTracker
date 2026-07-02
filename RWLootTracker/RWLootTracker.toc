@@ -5,7 +5,7 @@
 ## SavedVariables: LootTrackerConfig, LootTrackerDB
 ## Dependencies: Blizzard_Console
 ## AddonCompartmentFunc: RWL_CompartmentClickAction
-## Version: 0.4.0
+## Version: 0.4.1
 ## IconTexture: Interface\AddOns\RWLootTracker\media\RangelnIcon.tga
 ## Category: Loot
 ## Category-deDE: Beute
