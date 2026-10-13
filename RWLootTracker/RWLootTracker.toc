@@ -1,11 +1,11 @@
-## Interface: 110205, 120000
+## Interface: 120100, 120105
 ## Title: RWLootTracker
 ## Notes: Tracking of raid loot
 ## Author: Die oberste Rangelleitung
 ## SavedVariables: LootTrackerConfig, LootTrackerDB
 ## Dependencies: Blizzard_Console
 ## AddonCompartmentFunc: RWL_CompartmentClickAction
-## Version: 0.4.1
+## Version: 0.7.6
 ## IconTexture: Interface\AddOns\RWLootTracker\media\RangelnIcon.tga
 ## Category: Loot
 ## Category-deDE: Beute
@@ -19,6 +19,13 @@
 ## Category-zhCN: 战利品
 ## Category-zhTW: 戰利品
 
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
+
 RWLootTracker.lua
+RWLootTrackerRoster.lua
 RWLootTrackerViewer.lua
+RWLootTrackerMinimap.lua
 RWLootTrackerListener.lua

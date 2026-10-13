@@ -10,9 +10,10 @@ local function GetRaidLeaderGuild()
     DebugPrint("Checking Raid Group")
     for i = 1, GetNumGroupMembers() do
         local name = GetRaidRosterInfo(i)
-        if name and UnitIsGroupLeader(name) then
+        local unit = "raid" .. i
+        if name and UnitIsGroupLeader(unit) then
             DebugPrint(string.format("Found group leader: %s", name))
-            local guildName = GetGuildInfo(name)
+            local guildName = GetGuildInfo(unit)
             
             if guildName then
                 DebugPrint(string.format("Found Guild name: %s", guildName))
@@ -95,7 +96,11 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
             end
             DebugPrint("Prüfung bestanden, verarbeite Loot")
             local item = Item:CreateFromItemLink(dropInfo.itemHyperlink)
+            -- Item data may not be cached yet. The hyperlink already carries
+            -- the localized display name, so recording can still finish now.
             local itemName = item:GetItemName()
+                or dropInfo.itemHyperlink:match("|h%[(.-)%]|h")
+                or dropInfo.itemHyperlink
             local itemID = select(1, GetItemInfoInstant(dropInfo.itemHyperlink))
             local encounterInfo = C_LootHistory.GetInfoForEncounter(encounterID)
             local bossName = encounterInfo and encounterInfo.encounterName or "Unbekannt"
@@ -106,7 +111,7 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
                 for _, roll in ipairs(dropInfo.rollInfos) do
                     if roll.isWinner then
                         local rollType = roll.state
-                        rollValue = roll.roll
+                        rollValue = roll.roll or 0
                         if rollType == Enum.EncounterLootDropRollState.NeedMainSpec then
                             rollTypeName = "Need (Main Spec)"
                         elseif rollType == Enum.EncounterLootDropRollState.NeedOffSpec then
@@ -162,6 +167,7 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
 
             LootTrackerDB = LootTrackerDB or {}
             LootTrackerDB[dateOnly] = LootTrackerDB[dateOnly] or {}
+            local rosterID = RWLootTrackerGlobal.CaptureRaidRoster(dateOnly)
 
             table.insert(LootTrackerDB[dateOnly], {
                 time = fullTime,
@@ -177,11 +183,16 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
                 boss = bossName,
                 armorType = armorType,
                 slot = itemSlot,
-                dateOnly = dateOnly
+                dateOnly = dateOnly,
+                rosterID = rosterID
             })
 
+            if RWLootTrackerGlobal.calendarFrame then
+                RWLootTrackerGlobal.InitializeCalendar()
+            end
+
             if LootTrackerConfig.LogToChat then
-                print("RWLootTracker: Gewinner erkannt: " .. dropInfo.winner.playerName .. " (" .. playerClass .. ", " .. playerSpecialization .. ", GUID: " .. playerGUID .. "), " .. itemName .. " (Roll: " .. rollTypeName .. ", Wert: " .. rollValue .. ")")
+                print("RWLootTracker: Gewinner erkannt: " .. (dropInfo.winner.playerName or "Unbekannt") .. " (" .. playerClass .. ", " .. playerSpecialization .. ", GUID: " .. playerGUID .. "), " .. itemName .. " (Roll: " .. rollTypeName .. ", Wert: " .. rollValue .. ")")
             end
         else
             DebugPrint("... no Winner yet")

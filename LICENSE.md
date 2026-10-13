@@ -1,5 +1,9 @@
 MIT License
 
+This license covers RWLootTracker's own code. Bundled library source files
+under `RWLootTracker/Libs/` retain their respective upstream terms; see
+`RWLootTracker/Libs/THIRD_PARTY_NOTICES.md`.
+
 Copyright (c) 2025 zrb437
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
