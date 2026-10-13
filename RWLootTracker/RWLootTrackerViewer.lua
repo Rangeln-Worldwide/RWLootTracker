@@ -1,9 +1,9 @@
 -- Replaces the raw text viewer with a readable daily overview and explicit export.
--- Saved loot entries remain compatible; the comment is the first export column.
+-- Saved loot entries remain compatible; the comment is the last export column.
 local addon = RWLootTrackerGlobal
 local columns = {
-    "Kommentar", "Zeit", "Boss", "Spieler", "GUID", "Klasse", "Spezialisierung",
-    "Gegenstand", "Itemname", "ItemID", "Rollart", "Rollwert", "Rüstungstyp", "Slot",
+    "Zeit", "Boss", "Spieler", "GUID", "Klasse", "Spezialisierung",
+    "Gegenstand", "Itemname", "ItemID", "Rollart", "Rollwert", "Typ", "Subtyp", "Slot", "Kommentar",
 }
 local pageSize = 8
 
@@ -58,10 +58,14 @@ local function ExportDay(key)
         lines[#lines + 1] = table.concat(columns, "\t")
     end
     for _, entry in ipairs(LootTrackerDB[key] or {}) do
+        local itemType, itemSubType
+        if entry.item or entry.itemID then
+            _, itemType, itemSubType = C_Item.GetItemInfoInstant(entry.item or entry.itemID)
+        end
         local data = {
-            entry.comment, entry.time, entry.boss, entry.player, entry.playerGUID, entry.playerClass,
+            entry.time, entry.boss, entry.player, entry.playerGUID, entry.playerClass,
             entry.playerSpecialization, entry.item, entry.itemName, entry.itemID,
-            entry.method, entry.rollValue, entry.armorType, entry.slot,
+            entry.method, entry.rollValue, itemType, itemSubType, entry.slot, entry.comment,
         }
         for i = 1, #columns do data[i] = ExportValue(data[i]) end
         lines[#lines + 1] = table.concat(data, "\t")

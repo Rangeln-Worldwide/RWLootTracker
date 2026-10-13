@@ -37,30 +37,30 @@ end
 
 local function ShouldTrackInstance()
     local inInstance, instanceType = IsInInstance()
-    local instanceName, instanceMapID, difficultyName, maxPlayers, isDynamic, instanceID, instanceGroupSize = GetInstanceInfo()
+    local instanceName, _, difficultyID = GetInstanceInfo()
     
     if inInstance then
         if instanceType == "raid" then
             local instanceDifficulty = nil
-            if difficultyName == 14 then
+            if difficultyID == 14 then
                 instanceDifficulty = "NHC"
-            elseif difficultyName == 15 then
+            elseif difficultyID == 15 then
                 instanceDifficulty = "HC"
-            elseif difficultyName == 16 then
+            elseif difficultyID == 16 then
                 instanceDifficulty = "MYTHIC"
-            elseif difficultyName == 17 then
+            elseif difficultyID == 17 then
                 instanceDifficulty = "LFR"
-            elseif difficultyName == 233 then
+            elseif difficultyID == 233 then
                 instanceDifficulty = "MYTHIC_FLEX"
             else
                 instanceDifficulty = "unknown"
             end
             
             if LootTrackerConfig.trackedRaidDifficulties[instanceDifficulty] then
-                DebugPrint(string.format("Instanz verfolgen: %s (%s, %s) %s", instanceName, difficultyName, instanceType, instanceDifficulty))
+                DebugPrint(string.format("Instanz verfolgen: %s (%s, %s) %s", instanceName, difficultyID, instanceType, instanceDifficulty))
                 return true
             else
-                DebugPrint(string.format("Instanz NICHT verfolgen: %s (%s). Schwierigkeitsgrad nicht aktiviert.", instanceName, difficultyName))
+                DebugPrint(string.format("Instanz NICHT verfolgen: %s (%s). Schwierigkeitsgrad nicht aktiviert.", instanceName, difficultyID))
                 return false
             end
         else
@@ -101,7 +101,8 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
             local itemName = item:GetItemName()
                 or dropInfo.itemHyperlink:match("|h%[(.-)%]|h")
                 or dropInfo.itemHyperlink
-            local itemID = select(1, GetItemInfoInstant(dropInfo.itemHyperlink))
+            local itemID, _, _, itemEquipLoc =
+                C_Item.GetItemInfoInstant(dropInfo.itemHyperlink)
             local encounterInfo = C_LootHistory.GetInfoForEncounter(encounterID)
             local bossName = encounterInfo and encounterInfo.encounterName or "Unbekannt"
 
@@ -128,17 +129,6 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
                         break 
                     end
                 end
-            end
-
-            local _, _, _, _, _, itemType, itemSubClass, _, itemEquipLoc = GetItemInfo(dropInfo.itemHyperlink)
-
-            local armorType = ""
-            if itemType == "Armor" then
-                armorType = itemSubClass or "Unbekannt"
-            elseif itemType == "Weapon" then
-                armorType = "Waffe"
-            else
-                armorType = itemType or "Sonstiges"
             end
 
             local itemSlot = ""
@@ -181,7 +171,6 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
                 method = rollTypeName,
                 rollValue = rollValue,
                 boss = bossName,
-                armorType = armorType,
                 slot = itemSlot,
                 dateOnly = dateOnly,
                 rosterID = rosterID
