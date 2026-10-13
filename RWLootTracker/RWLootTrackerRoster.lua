@@ -17,7 +17,6 @@ function addon.RestoreOriginalWinner(entry)
     entry.player = original[1]
     entry.playerGUID = original[2]
     entry.playerClass = original[3]
-    entry.playerSpecialization = original[4]
     entry.originalWinner = nil
     entry.comment = entry.note
 end

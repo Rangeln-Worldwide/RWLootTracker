@@ -2,7 +2,7 @@
 -- Saved loot entries remain compatible; the comment is the last export column.
 local addon = RWLootTrackerGlobal
 local columns = {
-    "Zeit", "Boss", "Spieler", "GUID", "Klasse", "Spezialisierung",
+    "Zeit", "Boss", "Spieler", "GUID", "Klasse",
     "Gegenstand", "Itemname", "ItemID", "Rollart", "Rollwert", "Typ", "Subtyp", "Slot", "Kommentar",
 }
 local pageSize = 8
@@ -64,7 +64,7 @@ local function ExportDay(key)
         end
         local data = {
             entry.time, entry.boss, entry.player, entry.playerGUID, entry.playerClass,
-            entry.playerSpecialization, entry.item, entry.itemName, entry.itemID,
+            entry.item, entry.itemName, entry.itemID,
             entry.method, entry.rollValue, itemType, itemSubType, entry.slot, entry.comment,
         }
         for i = 1, #columns do data[i] = ExportValue(data[i]) end
@@ -295,12 +295,11 @@ ShowEntryEditor = function(entry, dateKey)
                     addon.RestoreOriginalWinner(record)
                 else
                     record.originalWinner = record.originalWinner or {
-                        record.player, record.playerGUID, record.playerClass, record.playerSpecialization,
+                        record.player, record.playerGUID, record.playerClass,
                     }
                     record.player = receiver[2]
                     record.playerGUID = receiver[1] or ""
                     record.playerClass = receiver[3] or "Unbekannt"
-                    record.playerSpecialization = "Unbekannt"
                 end
             end
             local note = f.noteBox:GetText():match("^%s*(.-)%s*$")

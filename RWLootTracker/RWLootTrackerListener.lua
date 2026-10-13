@@ -145,7 +145,6 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
 
             local playerGUID = dropInfo.winner.playerGUID or "Unbekannt"
             local playerClass = "Unbekannt"
-            local playerSpecialization = dropInfo.winner.specialization or "Unbekannt"
 
             if playerGUID ~= "Unbekannt" then
                 local locClassString, _, _, _, _, _, _ = GetPlayerInfoByGUID(playerGUID)
@@ -164,7 +163,6 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
                 player = dropInfo.winner.playerName,
                 playerGUID = playerGUID,
                 playerClass = playerClass,
-                playerSpecialization = playerSpecialization,
                 item = dropInfo.itemHyperlink,
                 itemID = itemID,
                 itemName = itemName,
@@ -181,7 +179,7 @@ listenerFrame:SetScript("OnEvent", function(self, event, ...)
             end
 
             if LootTrackerConfig.LogToChat then
-                print("RWLootTracker: Gewinner erkannt: " .. (dropInfo.winner.playerName or "Unbekannt") .. " (" .. playerClass .. ", " .. playerSpecialization .. ", GUID: " .. playerGUID .. "), " .. itemName .. " (Roll: " .. rollTypeName .. ", Wert: " .. rollValue .. ")")
+                print("RWLootTracker: Gewinner erkannt: " .. (dropInfo.winner.playerName or "Unbekannt") .. " (" .. playerClass .. ", GUID: " .. playerGUID .. "), " .. itemName .. " (Roll: " .. rollTypeName .. ", Wert: " .. rollValue .. ")")
             end
         else
             DebugPrint("... no Winner yet")
